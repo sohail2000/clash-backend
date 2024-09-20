@@ -9,9 +9,11 @@ import { ClashModule } from './clash/clash.module';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
+    SocketModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ".env.local",
@@ -27,20 +29,6 @@ import { join } from 'path';
         port: 6379,
       }
     }),
-    
-    // BullModule.forRootAsync({
-    //   imports: [ConfigModule],
-    //   useFactory: async (configService: ConfigService) => ({
-    //     redis: {
-    //       host: configService.get<string>('REDIS_HOST'),
-    //       port: configService.get<number>('REDIS_PORT'),
-    //     },
-    //   }),
-    //   inject: [ConfigService],
-    // }),
-
-
-
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
@@ -59,6 +47,7 @@ import { join } from 'path';
     MailModule,
     AuthModule,
     ClashModule,
+    SocketModule,
   ],
   controllers: [],
   providers: [],
